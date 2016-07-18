@@ -1,40 +1,59 @@
-" Vundle stuff "
+function! ToggleRelativeNumber()
+    " Toggles the relativenumber setting
+    if &relativenumber
+        set relativenumber!
+    else
+        set relativenumber
+    endif
+endfunction
+
+""" Vundle happiness
 set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-" Vundle plugins "
-Plugin 'VundleVim/Vundle.vim'     " Required by Vundle "
-Plugin 'tpope/vim-fugitive'       " Git wrapper "
-Plugin 'jiangmiao/auto-pairs'     " Auto-insert matching braces "
-Plugin 'majutsushi/tagbar'        " Shows and interacts with ctags files "
-Plugin 'altercation/vim-colors-solarized'  " Colorscheme for solarized "
-Plugin 'fatih/vim-go'             " Development env for Go "
-Plugin 'airblade/vim-gitgutter'   " Shows git gutter info "
-Plugin 'Shougo/neocomplete.vim'   " Autocompletion engine "
+" Plugins go here
+Plugin 'VundleVim/Vundle.vim'           " The Vundle plugin manager. "
+Plugin 'jiangmiao/auto-pairs'           " Automatically pairs brackets and quotes. "
+Plugin 'majutsushi/tagbar'              " Uses ctags to display file tokens. "
+Plugin 'scrooloose/nerdtree'            " Sidebar file browser that is epic. "
+Plugin 'Xuyuanp/nerdtree-git-plugin'    " | Shows git info in nerdtree. Because its epic. "
+Plugin 'vim-airline/vim-airline'        " Prettifies statusbar and tab bar. "
+Plugin 'airblade/vim-gitgutter'         " Displays git status info in the gutterbar. "
+Plugin 'flazz/vim-colorschemes'         " A boatload of amazing colorschemes. "
+Plugin 'Shougo/neocomplete'             " Autocompletion engine "
+Plugin 'faith/vim-go'                   " Turns vim into Golang IDE :) "
 
 call vundle#end()
 filetype plugin indent on
+"""
 
-set number                        "Line numbers"
-syntax on                         "File syntax"
-set expandtab                     "Use number of spaces instead of \t"
-set shiftwidth=2                  ""
-set tabstop=2                     "Number of spaces to use for tabs"
-match ErrorMsg '\s\+$'            "Highlight trailing whitespace"
-set autoindent                    "Carry over leading tabs to the next line"
-set colorcolumn=80                "Set a column of color"
-set laststatus=2                  "All windows have status"
-set relativenumber                "Line numbers relative to cursor"
-set backspace=2                   "TODO"
-set cryptmethod=blowfish2         "Encryption method to be used for files"
-set mouse=a                       "Enables mouse usage"
-set completeopt-=preview
+set mouse=a
+set number
+set cursorline
+set relativenumber
+set list
+setlocal lcs=tab:▸\ ,trail:_
+syntax on
+colorscheme solarized
+set autoindent
+set tabstop=4
+set shiftwidth=0
+set expandtab
+set backspace=2
+set textwidth=0
 
-" Custom mappings
+" Status bar always on
+set laststatus=2
+
+""" Keybindings
 let mapleader=","
 nnoremap <Leader>tt :TagbarToggle<CR>
+nnoremap <Leader>m :tabp<CR>
+nnoremap <Leader>. :tabn<CR>
+nnoremap <Leader>rn :call ToggleRelativeNumber()<CR>
+"""
 
 """"""" vim-go """"""
 let g:go_disable_autoinstall = 0
@@ -50,20 +69,10 @@ let g:go_highlight_build_constraints = 1
 let g:neocomplete#enable_at_startup = 1
 """""""
 
-""""""" Solarized """"""
-"let g:solarized_termcolors=16
-"let g:solarized_visibility = "high"
-"let g:solarized_contrast = "high"
-let g:solarized_termtrans = 1
-"set background=light
-set background=dark
-colorscheme solarized
-"""""""
+" Airline
+let g:airline_powerline_fonts = 1
 
-"Buffers
-nnoremap <C-h> :bp<CR>
-nnoremap <C-l> :bn<CR>
-
-
-""" GoTags """"""
-let g:tagbar_type_go = {'ctagstype': 'go', 'kinds' : ['p:package', 'i:imports:1', 'c:constants', 'v:variables', 't:types', 'n:interfaces', 'w:fields', 'e:embedded', 'm:methods', 'r:constructor', 'f:functions'], 'sro' : '.', 'kind2scope' : { 't' : 'ctype', 'n' : 'ntype'}, 'scope2kind' : { 'ctype' : 't', 'ntype' : 'n' }, 'ctagsbin'  : 'gotags', 'ctagsargs' : '-sort -silent' }
+" Show syntax group under cursor
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '>trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
