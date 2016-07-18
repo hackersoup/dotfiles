@@ -36,6 +36,7 @@ set relativenumber
 set list
 setlocal lcs=tab:▸\ ,trail:_
 syntax on
+set background=dark
 colorscheme solarized
 set autoindent
 set tabstop=4
