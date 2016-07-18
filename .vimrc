@@ -53,6 +53,7 @@ nnoremap <Leader>tt :TagbarToggle<CR>
 nnoremap <Leader>m :tabp<CR>
 nnoremap <Leader>. :tabn<CR>
 nnoremap <Leader>rn :call ToggleRelativeNumber()<CR>
+cmap w!! w !sudo tee > /dev/null %
 """
 
 """"""" vim-go """"""
