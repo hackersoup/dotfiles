@@ -23,7 +23,7 @@ Plugin 'vim-airline/vim-airline'        " Prettifies statusbar and tab bar. "
 Plugin 'airblade/vim-gitgutter'         " Displays git status info in the gutterbar. "
 Plugin 'flazz/vim-colorschemes'         " A boatload of amazing colorschemes. "
 Plugin 'Shougo/neocomplete'             " Autocompletion engine "
-Plugin 'faith/vim-go'                   " Turns vim into Golang IDE :) "
+Plugin 'fatih/vim-go'                   " Turns vim into Golang IDE :) "
 
 call vundle#end()
 filetype plugin indent on
@@ -37,7 +37,7 @@ set list
 setlocal lcs=tab:▸\ ,trail:_
 syntax on
 set background=dark
-colorscheme solarized
+colorscheme Monokai
 set autoindent
 set tabstop=4
 set shiftwidth=0
@@ -48,14 +48,19 @@ set textwidth=0
 " Status bar always on
 set laststatus=2
 
-""" Keybindings
+""""""" Keybindings
 let mapleader=","
 nnoremap <Leader>tt :TagbarToggle<CR>
+nnoremap <Leader>ntt :NERDTreeToggle<CR>
 nnoremap <Leader>m :tabp<CR>
 nnoremap <Leader>. :tabn<CR>
 nnoremap <Leader>rn :call ToggleRelativeNumber()<CR>
 cmap w!! w !sudo tee > /dev/null %
-"""
+" Show syntax group under cursor
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '>trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+"""""""
 
 """"""" vim-go """"""
 let g:go_disable_autoinstall = 0
@@ -73,8 +78,4 @@ let g:neocomplete#enable_at_startup = 1
 
 " Airline
 let g:airline_powerline_fonts = 1
-
-" Show syntax group under cursor
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '>trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+let g:airline#extensions#tabline#enabled = 1
