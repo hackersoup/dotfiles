@@ -22,8 +22,10 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'    " | Shows git info in nerdtree. Because 
 Plugin 'vim-airline/vim-airline'        " Prettifies statusbar and tab bar. "
 Plugin 'airblade/vim-gitgutter'         " Displays git status info in the gutterbar. "
 Plugin 'flazz/vim-colorschemes'         " A boatload of amazing colorschemes. "
-Plugin 'Shougo/neocomplete'             " Autocompletion engine "
-Plugin 'fatih/vim-go'                   " Turns vim into Golang IDE :) "
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'kien/ctrlp.vim'
+Plugin 'rust-lang/rust.vim'
+Plugin 'vim-syntastic/syntastic'
 
 call vundle#end()
 filetype plugin indent on
@@ -31,17 +33,18 @@ filetype plugin indent on
 
 set mouse=a
 set number
+set hidden
 set cursorline
-set relativenumber
-set list
-setlocal lcs=tab:▸\ ,trail:_
 syntax on
 set background=dark
 colorscheme Monokai
 set autoindent
-set tabstop=4
+" Number of spaces a tab counts as "
+set tabstop=8
+" Number of spaces for autoindent (>> and <<). When zero, tabstop will be used "
 set shiftwidth=0
-set expandtab
+" Use appropriate number of spaces for a tab or not "
+set noexpandtab
 set backspace=2
 set textwidth=0
 
@@ -52,30 +55,30 @@ set laststatus=2
 let mapleader=","
 nnoremap <Leader>tt :TagbarToggle<CR>
 nnoremap <Leader>ntt :NERDTreeToggle<CR>
-nnoremap <Leader>m :tabp<CR>
-nnoremap <Leader>. :tabn<CR>
+nnoremap <Leader>m :bprev<CR>
+nnoremap <Leader>. :bnext<CR>
+nnoremap <Leader>q :bp <BAR> bd #<CR>
+nnoremap <Leader>l :ls<CR>
 nnoremap <Leader>rn :call ToggleRelativeNumber()<CR>
+nnoremap <Leader>p :CtrlPTag<CR>
 cmap w!! w !sudo tee > /dev/null %
-" Show syntax group under cursor
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '>trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-"""""""
-
-""""""" vim-go """"""
-let g:go_disable_autoinstall = 0
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_interfaces = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_build_constraints = 1
-"""""""
-
-""""""" neocomplete """"""
-let g:neocomplete#enable_at_startup = 1
-"""""""
 
 " Airline
 let g:airline_powerline_fonts = 1
+" Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
+" Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'
+
+" Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" YouCompleteMe
+let g:ycm_rust_src_path = '/Users/bradcampbell/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src'
